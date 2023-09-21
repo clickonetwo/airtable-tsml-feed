@@ -1,6 +1,7 @@
 import Airtable, {FieldSet, Record} from 'airtable'
 import {getSettings} from "./settings.js";
 import {AirtableBase} from "airtable/lib/airtable_base.js";
+import {QueryParams} from "airtable/lib/query_params.js";
 
 const loadedBases: { [name: string]: AirtableBase } = {}
 let airtableConfigured = false
@@ -22,11 +23,11 @@ export async function getBase(baseId: string) {
     return base
 }
 
-export async function getAllRecords(base: AirtableBase, tableId: string, viewId: string) {
+export async function getAllRecords(base: AirtableBase, tableId: string, options: QueryParams<object>) {
     const allRecords: Record<FieldSet>[] = []
     try {
         await base.table(tableId)
-            .select({view: viewId})
+            .select(options)
             .eachPage(
                 (records, processNextPage) => {
                     console.log(`Fetched ${records.length} record(s)...`);
