@@ -13,7 +13,7 @@ loadSettings()
 
 express()
     .use(express.json())
-    .get('api/tsml', asyncWrapper(getTsmlFeed))
+    .get('/api/tsml', asyncWrapper(getTsmlFeed))
     .listen(PORT, () => console.log(`Listening on port ${PORT}`))
 
 type Handler = (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void>
