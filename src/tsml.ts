@@ -138,7 +138,7 @@ function dateToUpdated(isoDate: string) {
     function pad2(posNum: number) {
         return posNum < 10 ? `0${posNum}` : `${posNum}`
     }
-    const year = `${date.getUTCFullYear()}-${pad2(date.getUTCMonth())}-${pad2(date.getUTCDate())}`
+    const year = `${date.getUTCFullYear()}-${pad2(date.getUTCMonth() + 1)}-${pad2(date.getUTCDate())}`
     const time = `${pad2(date.getUTCHours())}:${pad2(date.getUTCMinutes())}:${pad2(date.getUTCSeconds())}`
     return `${year} ${time}`
 }
