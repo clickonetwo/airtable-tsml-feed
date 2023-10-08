@@ -19,6 +19,7 @@ interface Tsml {
     postal_code?: string,           // postal code for all meetings
     country?: string,               // country for all meetings
     group?: string,                 // affiliated meeting group
+    group_notes?: string,           // (used for WSO meeting ID for the group)
     email?: string,                 // publicly available email for group
     updated?: string,               // UTC last update date (format YYYY-MM-DD HH:MM:SS)
 }
@@ -42,7 +43,15 @@ export function recordToTsml(record: Record<FieldSet>) {
     const end_time = getOrDefault<string>('End Time')
     const timezone = timezoneToDesignator(getOrDefault<string>('Time Zone'))
     const types = getOrDefault<string[]>('Characteristics').map((c) => characteristicToCode(c))
-    const notes = getOrDefault<string>('Format', '')
+    const wso_id = getOrDefault<string>('WSO ID', '')
+    let notes = getOrDefault<string>('Format', '')
+    if (wso_id) {
+        if (notes) {
+            notes = `${notes}\n\nWSO #${wso_id}`
+        } else {
+            notes = `WSO #${wso_id}`
+        }
+    }
     const conference_url = getOrDefault<string>('Attendee URL', '')
     const conference_url_notes = getOrDefault<string>('Attendee Instructions', '')
     const location = getOrDefault<string>('In-Person Building', '')
