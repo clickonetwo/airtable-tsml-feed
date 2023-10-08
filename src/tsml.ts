@@ -96,6 +96,7 @@ const characteristicToCodeTable: LookupTable<string> = {
     'Transgender': 'T',
     'Wheelchair Accessible': 'X',
     'Women': 'W',
+    'Women of Color': 'WOC',
     'Young Adults': 'YA',
 }
 
