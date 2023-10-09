@@ -1,4 +1,5 @@
-import {FieldSet, Record} from 'airtable';
+import {FieldSet, Record} from 'airtable'
+import { DateTime } from 'luxon'
 
 interface Tsml {
     name: string,                   // meeting name
@@ -142,15 +143,10 @@ function timezoneToDesignator(name: string) {
 }
 
 function dateToUpdated(isoDate: string) {
-    const parsed = Date.parse(isoDate)
-    const date = new Date(parsed)
-    // want format YYYY-MM-DD HH:MM:SS
-    function pad2(posNum: number) {
-        return posNum < 10 ? `0${posNum}` : `${posNum}`
-    }
-    const year = `${date.getUTCFullYear()}-${pad2(date.getUTCMonth() + 1)}-${pad2(date.getUTCDate())}`
-    const time = `${pad2(date.getUTCHours())}:${pad2(date.getUTCMinutes())}:${pad2(date.getUTCSeconds())}`
-    return `${year} ${time}`
+    // want format YYYY-MM-DD HH:MM:SS (naive, plugin expects Pacific time)
+    const dt = DateTime.fromISO(isoDate)
+    const dtPacific = dt.setZone('America/Los_Angeles')
+    return dtPacific.toFormat('yyyy-MM-dd HH:mm:ss')
 }
 
 function lookupOrThrow<T>(name: string, table: LookupTable<T>): T {
