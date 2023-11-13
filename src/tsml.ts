@@ -54,7 +54,15 @@ export function recordToTsml(record: Record<FieldSet>) {
         }
     }
     const conference_url = getOrDefault<string>('Attendee URL', '')
-    const conference_url_notes = getOrDefault<string>('Attendee Instructions', '')
+    const meeting_id = getOrDefault<string>('Meeting ID', '')
+    const meeting_pw = getOrDefault<string>('Meeting PW', '')
+    let conference_url_notes = getOrDefault<string>('Attendee Instructions', '')
+    if (!conference_url_notes && meeting_id) {
+        conference_url_notes = `Meeting ID: ${meeting_id}`
+        if (meeting_pw) {
+            conference_url_notes += `\nPassword: ${meeting_pw}`
+        }
+    }
     const location = getOrDefault<string>('In-Person Building', '')
     const location_notes = getOrDefault<string>('In-Person Directions', '')
     const address = getOrDefault<string>('In-Person Address', '')
