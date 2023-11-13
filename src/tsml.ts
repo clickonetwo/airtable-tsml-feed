@@ -43,7 +43,7 @@ export function recordToTsml(record: Record<FieldSet>) {
     const time = getOrDefault<string>('Start Time')
     const end_time = getOrDefault<string>('End Time')
     const timezone = timezoneToDesignator(getOrDefault<string>('Time Zone'))
-    const types = getOrDefault<string[]>('Characteristics').map((c) => characteristicToCode(c))
+    const types = getOrDefault<string[]>('Characteristics', []).map((c) => characteristicToCode(c))
     const wso_id = getOrDefault<string>('WSO ID', '')
     let notes = getOrDefault<string>('Format', '')
     if (wso_id) {
