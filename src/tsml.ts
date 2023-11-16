@@ -39,11 +39,15 @@ export function recordToTsml(record: Record<FieldSet>) {
     }
     const name = getOrDefault<string>('Name')
     const slug = getOrDefault<string>('TSML Slug')
+    const schedule = getOrDefault<string>('Schedule')
     const day = dayToNumber(getOrDefault<string>('Day of Week'))
     const time = getOrDefault<string>('Start Time')
     const end_time = getOrDefault<string>('End Time')
     const timezone = timezoneToDesignator(getOrDefault<string>('Time Zone'))
     const types = getOrDefault<string[]>('Characteristics', []).map((c) => characteristicToCode(c))
+    if (schedule === 'Monthly') {
+        types.push(characteristicToCode(schedule))
+    }
     const wso_id = getOrDefault<string>('WSO ID', '')
     let notes = getOrDefault<string>('Format', '')
     if (wso_id) {
@@ -104,6 +108,7 @@ const characteristicToCodeTable: LookupTable<string> = {
     'LGBTQIA+': 'LGBTQIA',
     'Location Temporarily Closed': 'TC',
     'Men': 'M',
+    'Monthly': 'MNTH',
     'Online Meeting': 'ONL',
     'Parents': 'POA',
     'People of Color': 'POC',
