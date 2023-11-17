@@ -44,7 +44,9 @@ export function recordToTsml(record: Record<FieldSet>) {
     const time = getOrDefault<string>('Start Time')
     const end_time = getOrDefault<string>('End Time')
     const timezone = timezoneToDesignator(getOrDefault<string>('Time Zone'))
+    const language = getOrDefault<string>('Language')
     const types = getOrDefault<string[]>('Characteristics', []).map((c) => characteristicToCode(c))
+    types.push(characteristicToCode(language))
     if (schedule === 'Monthly') {
         types.push(characteristicToCode(schedule))
     }
