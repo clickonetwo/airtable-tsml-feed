@@ -1,12 +1,13 @@
 {
   "name": "airtable-tsml-feed",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Provide a TSML JSON feed from an Airtable database",
   "author": "dan@clickonetwo.io",
   "license": "AGPL v3",
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": "20.x",
+    "npm": "10.x"
   },
   "main": "dist/server.js",
   "scripts": {
