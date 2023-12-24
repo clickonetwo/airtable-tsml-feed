@@ -1,7 +1,7 @@
 import {FieldSet, Record} from 'airtable'
 import { DateTime } from 'luxon'
 
-interface Tsml {
+export interface Tsml {
     name: string,                   // meeting name
     slug: string,                   // slug for detail page
     day: number,                    // 0 = Sunday, 1 = Monday, etc.
@@ -36,6 +36,18 @@ export function recordToTsml(record: Record<FieldSet>) {
             }
         }
         return value as T
+    }
+    const now = parseInt(process.env["TSML_RUN_DATETIME_MILLIS"] || "0") || Date.now()
+    let lastEdit = getOrDefault<string>('Last Edit')
+    const startDate = getOrDefault<string>('Start Date', "")
+    if (startDate && now < new Date(startDate).valueOf()) {
+        return undefined
+    } else if (startDate && startDate > lastEdit) {
+        lastEdit = startDate
+    }
+    const endDate = getOrDefault<string>('End Date', "")
+    if (endDate && now >= new Date(endDate).valueOf()) {
+        return undefined
     }
     const name = getOrDefault<string>('Name')
     const slug = getOrDefault<string>('TSML Slug')
@@ -76,7 +88,7 @@ export function recordToTsml(record: Record<FieldSet>) {
     const state = getOrDefault<string>('State/Province')
     const country = getOrDefault<string>('Country')
     const email = getOrDefault<string>('Public Contact Email', '')
-    const updated = dateToUpdated(getOrDefault<string>('Last Edit'))
+    const updated = dateToUpdated(lastEdit)
     const tsml: Tsml = {
         name, slug,
         day, time, end_time, timezone,
@@ -157,7 +169,7 @@ function timezoneToDesignator(name: string) {
     return lookupOrThrow<string>(name, timezoneToDesignatorTable)
 }
 
-function dateToUpdated(isoDate: string) {
+export function dateToUpdated(isoDate: string) {
     // want format YYYY-MM-DD HH:MM:SS (naive, plugin expects Pacific time)
     const dt = DateTime.fromISO(isoDate)
     const dtPacific = dt.setZone('America/Los_Angeles')
