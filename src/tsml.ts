@@ -80,6 +80,7 @@ export function recordToTsml(record: Record<FieldSet>) {
         if (meeting_pw) {
             conference_url_notes += `\nPassword: ${meeting_pw}`
         }
+        conference_url_notes += `\nPhone dial-in: 669-444-9171`
     }
     const location = getOrDefault<string>('In-Person Building', '')
     const location_notes = getOrDefault<string>('In-Person Directions', '')
