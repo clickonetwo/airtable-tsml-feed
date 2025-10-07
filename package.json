@@ -7,7 +7,7 @@
   "type": "module",
   "engines": {
     "node": "22.x",
-    "npm": "10.x"
+    "npm": "11.x"
   },
   "main": "dist/server.js",
   "scripts": {
