@@ -12,9 +12,9 @@ export interface Tsml {
     notes?: string,                 // meeting format notes
     conference_url?: string         // URL for online meeting
     conference_url_notes?: string   // online attendee instructions
-    location?: string,              // building for in-person meeting
+    location?: string,              // building for an in-person meeting
     location_notes?: string,        // in-person attendee instructions
-    address?: string,               // building address for in-person meeting
+    address?: string,               // building address for an in-person meeting
     city?: string,                  // city for all meetings
     state?: string,                 // state for all meetings
     postal_code?: string,           // postal code for all meetings
@@ -103,9 +103,9 @@ export function recordToTsml(record: Record<FieldSet>) {
 
 type LookupTable<T> = { [name: string]: T }
 
+// these are all Al-Anon meeting types
 const characteristicToCodeTable: LookupTable<string> = {
     'Adult Children': 'AC',
-    'Al-Anon': 'ALA',
     'Alateen': 'Y',
     'Atheist / Agnostic': 'A',
     'Asian': 'AS',
@@ -130,6 +130,7 @@ const characteristicToCodeTable: LookupTable<string> = {
     'Smoking Permitted': 'SM',
     'Spanish': 'S',
     'Speaker': 'SP',
+    'Service': 'SVC',
     'Step Meeting': 'ST',
     'Transgender': 'T',
     'Wheelchair Accessible': 'X',
