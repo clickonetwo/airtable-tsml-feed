@@ -8,6 +8,7 @@ interface Settings {
     airtableToken: string,
     meetingsBaseId: string,
     meetingsTableId: string,
+    meetingsDistrict: string,
 }
 
 let loadedConfig: Settings | undefined
@@ -35,7 +36,8 @@ function envSettings(): Settings {
     const fromEnv = {
         airtableToken: process.env['AIRTABLE_TOKEN'],
         meetingsBaseId: process.env['MEETINGS_BASE_ID'],
-        meetingsTableId: process.env['MEETINGS_TABLE_ID']
+        meetingsTableId: process.env['MEETINGS_TABLE_ID'],
+        meetingsDistrict: process.env['MEETINGS_DISTRICT'] ?? 'NorCal-26',
     }
     for (const key in fromEnv) {
         if (!fromEnv[key]) {

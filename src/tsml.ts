@@ -37,16 +37,24 @@ export function recordToTsml(record: Record<FieldSet>) {
         }
         return value as T
     }
-    const now = parseInt(process.env["TSML_RUN_DATETIME_MILLIS"] || "0") || Date.now()
+    const now = parseInt(process.env["NOW_DATETIME_MILLIS"] || "0") || Date.now()
     let lastEdit = getOrDefault<string>('Last Edit')
     const startDate = getOrDefault<string>('Start Date', "")
-    if (startDate && now < new Date(startDate).valueOf()) {
-        return undefined
-    } else if (startDate && startDate > lastEdit) {
-        lastEdit = startDate
+    if (startDate) {
+        if (now < new Date(startDate).valueOf()) {
+            // don't process records before their start date
+            return undefined
+        }
+        if (startDate > lastEdit) {
+            // records that were last touched before their start date
+            // always act like they were touched at their start date,
+            // otherwise they won't be processed at their start date.
+            lastEdit = startDate
+        }
     }
     const endDate = getOrDefault<string>('End Date', "")
     if (endDate && now >= new Date(endDate).valueOf()) {
+        // don't process records after their end date
         return undefined
     }
     const name = getOrDefault<string>('Name')

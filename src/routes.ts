@@ -3,11 +3,13 @@ import {getAllRecords, getBase} from "./airtable.js";
 import {getSettings} from "./settings.js";
 import {Tsml, recordToTsml} from "./tsml.js";
 
-export async function getTsmlFeed(_req: Request, res: Response) {
+export async function getTsmlFeed(req: Request, res: Response) {
     const config = getSettings()
     const base = await getBase(config.meetingsBaseId)
-    const records = await getAllRecords(
-        base, config.meetingsTableId, { view: 'TSML Export' })
+    const tableId = req.query.tableId as string ?? config.meetingsTableId
+    const district = req.query.district as string ?? config.meetingsDistrict
+    const options = { filterByFormula: `{District} = "${district}"` }
+    const records = await getAllRecords(base, tableId, options)
     const exports: Tsml[] = []
     for (const record of records) {
         const tsml = recordToTsml(record)
