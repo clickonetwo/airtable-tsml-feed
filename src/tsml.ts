@@ -53,7 +53,7 @@ export function recordToTsml(record: Record<FieldSet>) {
         }
     }
     const endDate = getOrDefault<string>('End Date', "")
-    if (endDate && now >= new Date(endDate).valueOf()) {
+    if (endDate && now >= DateTime.fromISO(endDate, { setZone: true }).toMillis()) {
         // don't process records after their end date
         return undefined
     }
@@ -181,7 +181,7 @@ function timezoneToDesignator(name: string) {
 
 export function dateToUpdated(isoDate: string) {
     // want format YYYY-MM-DD HH:MM:SS (naive, plugin expects Pacific time)
-    const dt = DateTime.fromISO(isoDate)
+    const dt = DateTime.fromISO(isoDate, { setZone: true })
     const dtPacific = dt.setZone('America/Los_Angeles')
     return dtPacific.toFormat('yyyy-MM-dd HH:mm:ss')
 }
